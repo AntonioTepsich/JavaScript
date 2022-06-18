@@ -1,5 +1,5 @@
 let h='';
-jugar=prompt('Desea jugar al ahorcado? (SI/NO): ').toUpperCase();
+jugar=prompt('Desea jugar al ahorcado? (SI/NO): ').toUpperCase();                   //ARRANCA EL JUEGO
 while(h!='NO'){
     while (jugar!='SI' && jugar!='NO'){
         jugar=prompt('Disculpe, no quedo claro.\nDesea jugar al ahorcado? (SI/NO): ').toUpperCase()
@@ -16,7 +16,7 @@ while(h!='NO'){
 alert('Gracias por jugar!!');
 
 
-function juego (){
+function juego (){                   //AQUI JUNTAMOS TODAS LAS FUNCIONES CREADAS
     let palabra = prompt('Ingrese una palabra (sin acentos, ni espacios): ').toUpperCase();
     let fallos=0;
     let aciertos=0;
@@ -24,18 +24,17 @@ function juego (){
     let letraAcierta='';
     let letraErra='';
 
-    while((esLetra(palabra)==false) || (palabra.length<3) ){
+    while((esLetra(palabra)==false) || (palabra.length<3) ){                   //FUNCIONARA MIENTRAS LA PALABRA TENGA SOLO LETRAS Y MAS DE 3 PALABRAS
         if(esLetra(palabra)==false){
             palabra = prompt('no ingreso palabra con solo letras: ').toUpperCase();
-            // palabra = 'HOLA';
         } else {
             palabra = prompt('ingrese palabra mayor o igual a 3 letras(con la palabra NO se sale): ').toUpperCase();
         }
     }
     letra=prompt(`La palabra tiene ${palabra.length} letras\nTienes ${5-fallos} vidas\nIngrese una letra: `).toUpperCase();
-    // letra='H';
-    while((fallos!=5) && (aciertos!=(palabra.length))){
-        while(((esLetra(letra)==false) || (letra.length!=1) || (repite(letra,letraAcierta,letraErra)==true))){
+
+    while((fallos!=5) && (aciertos!=(palabra.length))){                   //FUNCIONARA HASTA QUE FALLE 5 VECES O ACIERTE LA PALABRA
+        while(((esLetra(letra)==false) || (letra.length!=1) || (repite(letra,letraAcierta,letraErra)==true))){                   //FUNCIONARA MIENTRAS SI NO INGRESA UNA LETRA, MAS DE UNA LETRA O SI SE REPITE LA LETRA
             if (repite(letra,letraAcierta,letraErra)==true){
                 letra=prompt(`ERROR.ingrese una letra distinta a (${letraAcierta+letraErra}): `).toUpperCase();
                 // letra='A';
@@ -43,23 +42,21 @@ function juego (){
                 letra=prompt('ERROR.ingrese UNA letra: ').toUpperCase();
             }
         }
-        if (validar(palabra, letra)==true){
+        if (validar(palabra, letra)==true){                   //AQUI SE VALIDA LA LETRA
             aciertos+=1;
             letraAcierta+=letra + '-';
         } else {
             fallos+=1;
             letraErra+=letra + '-';
-            // ordenar(palabra,letraAcierta)
         }
 
-        if(aciertos==(palabra.length)){
+        if(aciertos==(palabra.length)){                   //AQUI SE DIRA SI SE TERMINA EL JUEGO
             break
         } else if (fallos==5){
             break
         }
         p=ordenar(palabra,letraAcierta)
         letra=prompt(`La palabra tiene ${palabra.length} letras\nTienes ${5-fallos} vidas\nVas ${fallos} fallos (${letraErra})\nVas ${aciertos} aciertos (${p})\ningrese una letra: \n`).toUpperCase();
-        // letra='H';
     }
 
     if(aciertos==(palabra.length)){
@@ -70,11 +67,11 @@ function juego (){
 }
 
 
-function ordenar(palabra,letraAcierta){
+function ordenar(palabra,letraAcierta){                   //AQUI SE ORDENA LAS LETRAS QUE SE ACIERTEN
     let letra='';
     let palNueva='_'
     palNueva=palNueva.repeat(palabra.length)
-    for (let i=0; i<(letraAcierta.length); i++) {
+    for (let i=0; i<(letraAcierta.length); i++) {                 
         letra=letraAcierta[i];
         if (esLetra(letra)){
             for(let x=0; x<(palabra.length); x++){
@@ -90,13 +87,13 @@ function ordenar(palabra,letraAcierta){
 }
 
 
-function esLetra(palabra){
+function esLetra(palabra){                   //AQUI SE DIRA SI SON LETRAS O NO 
     let letra='';
     let contador=0;
     for (let i=0; i<(palabra.length); i++) {
         letra=palabra[i];
         letra=letra.charCodeAt()
-        if ((letra > 64) && (letra < 91)) {
+        if ((letra > 64) && (letra < 91)) {                   //PUSE ESTE CODIGO PORQUE SE QUE TODAS LAS LETRAS SON MAYUSCULA Y SU CODIGO ASCII ESTA EN ORDEN 
             contador+=1;
         } else {
             break
@@ -109,7 +106,7 @@ function esLetra(palabra){
     }
 }
 
-function validar(palabra, ingreso){
+function validar(palabra, ingreso){                   //AQUI TE DIRA SI ACIERTA LA LETRA QUE DIJO CON LA RESPUESTA
     for (let i=0; i<(palabra.length); i++) {
         letra=palabra[i];
         if (ingreso==letra){
@@ -119,7 +116,7 @@ function validar(palabra, ingreso){
     return false;
 }
 
-function repite(letra,letraAcierta,letraErra){
+function repite(letra,letraAcierta,letraErra){                   //AQUI TE DIRA SI SE REPITE ALGUNA DE LAS LETRAS YA DICHAS
     let a=''
     letraAcierta=letraAcierta.split('');
     letraErra=letraErra.split('');
