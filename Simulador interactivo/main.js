@@ -1,13 +1,29 @@
+let h='';
+jugar=prompt('Desea jugar al ahorcado? (SI/NO): ').toUpperCase();
+while(h!='NO'){
+    while (jugar!='SI' && jugar!='NO'){
+        jugar=prompt('Disculpe, no quedo claro.\nDesea jugar al ahorcado? (SI/NO): ').toUpperCase()
+    }
+    if (jugar=='SI'){
+        juego();
+    }else if (jugar=='NO') {
+        break;
+    } 
+    jugar=prompt('Gracias por jugar\nDesea jugar otra vez? (SI/NO): ').toUpperCase();
+
+}
+
+alert('Gracias por jugar!!');
+
 
 function juego (){
-    let palabra = prompt('Ingrese una palabra (sin acentos, ni espacios): ');
+    let palabra = prompt('Ingrese una palabra (sin acentos, ni espacios): ').toUpperCase();
     let fallos=0;
     let aciertos=0;
     let letra='';
     let letraAcierta='';
     let letraErra='';
 
-    palabra=palabra.toUpperCase();
     while((esLetra(palabra)==false) || (palabra.length<3) ){
         if(esLetra(palabra)==false){
             palabra = prompt('no ingreso palabra con solo letras: ').toUpperCase();
@@ -52,8 +68,6 @@ function juego (){
         alert(`Perdiste, la palabra era: ${palabra}`)
     }
 }
-
-juego()
 
 
 function ordenar(palabra,letraAcierta){
