@@ -7,10 +7,9 @@ while(h!='NO'){
     if (jugar=='SI'){
         juego();
     }else if (jugar=='NO') {
-        break;
+         break;
     } 
     jugar=prompt('Gracias por jugar\nDesea jugar otra vez? (SI/NO): ').toUpperCase();
-
 }
 
 alert('Gracias por jugar!!');
@@ -33,19 +32,25 @@ function juego (){                   //AQUI JUNTAMOS TODAS LAS FUNCIONES CREADAS
     }
     letra=prompt(`La palabra tiene ${palabra.length} letras\nTienes ${5-fallos} vidas\nIngrese una letra: `).toUpperCase();
 
+
     while((fallos!=5) && (aciertos!=(palabra.length))){                   //FUNCIONARA HASTA QUE FALLE 5 VECES O ACIERTE LA PALABRA
         while(((esLetra(letra)==false) || (letra.length!=1) || (repite(letra,letraAcierta,letraErra)==true))){                   //FUNCIONARA MIENTRAS SI NO INGRESA UNA LETRA, MAS DE UNA LETRA O SI SE REPITE LA LETRA
             if (repite(letra,letraAcierta,letraErra)==true){
                 letra=prompt(`ERROR.ingrese una letra distinta a (${letraAcierta+letraErra}): `).toUpperCase();
-                // letra='A';
+                
             } else {
                 letra=prompt('ERROR.ingrese UNA letra: ').toUpperCase();
             }
         }
         if (validar(palabra, letra)==true){                   //AQUI SE VALIDA LA LETRA
-            aciertos+=1;
+            for (let i=0; i<(palabra.length); i++) {                 //CORREGI EL ERROR, AGREGUE UNA CICLO PARA CONTAR LOS ACIERTO CUANDO SE REPITEN
+                f=palabra[i];
+                if (letra==f){
+                    aciertos+=1
+                }
+            }
             letraAcierta+=letra + '-';
-        } else {
+        }else {
             fallos+=1;
             letraErra+=letra + '-';
         }
@@ -57,6 +62,7 @@ function juego (){                   //AQUI JUNTAMOS TODAS LAS FUNCIONES CREADAS
         }
         p=ordenar(palabra,letraAcierta)
         letra=prompt(`La palabra tiene ${palabra.length} letras\nTienes ${5-fallos} vidas\nVas ${fallos} fallos (${letraErra})\nVas ${aciertos} aciertos (${p})\ningrese una letra: \n`).toUpperCase();
+
     }
 
     if(aciertos==(palabra.length)){
@@ -65,7 +71,6 @@ function juego (){                   //AQUI JUNTAMOS TODAS LAS FUNCIONES CREADAS
         alert(`Perdiste, la palabra era: ${palabra}`)
     }
 }
-
 
 function ordenar(palabra,letraAcierta){                   //AQUI SE ORDENA LAS LETRAS QUE SE ACIERTEN
     let letra='';
@@ -129,3 +134,4 @@ function repite(letra,letraAcierta,letraErra){                   //AQUI TE DIRA 
     }
     return false
 }
+
