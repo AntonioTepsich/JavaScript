@@ -6,6 +6,33 @@ const container = document.querySelector('.container');
 const title = document.querySelector('.title');
 
 
+if (localStorage.getItem('actual')!= null){       //Sirve para que cada vez que se reinicie la pagina, no se borre el ultimo color
+    let guardado= JSON.parse(localStorage.getItem('actual'))
+    let newColo=guardado[0].newColor;
+    let text=guardado[0].texto;
+
+
+    colorNumber.innerHTML=newColo;
+
+    title.style.color= newColo;
+    colorNumber.style.color= newColo;
+    button.style.backgroundColor= newColo;
+    body.style.backgroundColor = newColo;
+    colorCard.style.backgroundColor=newColo;
+
+
+    if (text==='light'){
+        container.style.background= 'rgba(7, 15, 23, 0.65)';
+        button.style.color='rgba(7, 15, 23, 0.65)';
+    } else {
+        container.style.background= 'rgba(255, 255, 255, 0.8)';
+        button.style.color='rgba(255, 255, 255, 0.8)';
+    }
+}
+
+
+
+
 function generadorColor() {          //Aca genero el Color en formato RGB 
 
     const r = Math.floor(Math.random()*255);   
@@ -35,27 +62,49 @@ function setBackground() {         //Aca cambio los colores de la pagina
 
     const color = generadorColor();
     const newColor = rgbLetras(color);
-    const texto = cerebro(color);           
+    const texto = cerebro(color);
+    
+    save(color,newColor,texto)
 
-    colorNumber.innerHTML=newColor;
+}
 
-    title.style.color= newColor;
-    colorNumber.style.color= newColor;
-    button.style.backgroundColor= newColor;
-    body.style.backgroundColor = newColor;
-    colorCard.style.backgroundColor=newColor;
+function save(color,newColor,texto) {  //Para que se guarden los datos en el local storage 
+    let actual = [];
+    actual.push({color:color, newColor:newColor, texto:texto});
+
+    localStorage.setItem('actual', JSON.stringify(actual));
+
+}
 
 
-    if (texto==='light'){
+ 
+
+let actual = localStorage.getItem('actual')
+
+button.addEventListener('click',function(){   //Ejecutamos cada vez que apretamos el boton
+    setBackground()
+    let guardado= JSON.parse(localStorage.getItem('actual'))
+    let newColo=guardado[0].newColor;
+    let text=guardado[0].texto;
+
+
+    colorNumber.innerHTML=newColo;
+
+    title.style.color= newColo;
+    colorNumber.style.color= newColo;
+    button.style.backgroundColor= newColo;
+    body.style.backgroundColor = newColo;
+    colorCard.style.backgroundColor=newColo;
+
+
+    if (text==='light'){
         container.style.background= 'rgba(7, 15, 23, 0.65)';
         button.style.color='rgba(7, 15, 23, 0.65)';
     } else {
         container.style.background= 'rgba(255, 255, 255, 0.8)';
         button.style.color='rgba(255, 255, 255, 0.8)';
     }
-}
-
-button.addEventListener('click', setBackground)     //Ejecutamos cada vez que apretamos el boton
+})     
 
 
 
