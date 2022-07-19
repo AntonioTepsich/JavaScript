@@ -6,54 +6,32 @@ const container = document.querySelector('.container');
 const title = document.querySelector('.title');
 
 
-if (localStorage.getItem('actual')!= null){       //Sirve para que cada vez que se reinicie la pagina, no se borre el ultimo color
-    let guardado= JSON.parse(localStorage.getItem('actual'))
-    let newColo=guardado[0].newColor;
-    let text=guardado[0].texto;
-
-
-    colorNumber.innerHTML=newColo;
-
-    title.style.color= newColo;
-    colorNumber.style.color= newColo;
-    button.style.backgroundColor= newColo;
-    body.style.backgroundColor = newColo;
-    colorCard.style.backgroundColor=newColo;
-
-
-    if (text==='light'){
-        container.style.background= 'rgba(7, 15, 23, 0.65)';
-        button.style.color='rgba(7, 15, 23, 0.65)';
-    } else {
-        container.style.background= 'rgba(255, 255, 255, 0.8)';
-        button.style.color='rgba(255, 255, 255, 0.8)';
-    }
-}
-
-
+(localStorage.getItem('actual')!= null) && init()       //Sirve para que cada vez que se reinicie la pagina, no se borre el ultimo color 
 
 
 function generadorColor() {          //Aca genero el Color en formato RGB 
 
-    const r = Math.floor(Math.random()*255);   
-    const g = Math.floor(Math.random()*255);   //como Math.random genera un numero entre 0 y 1, quiero que mis numeros vayan de 0 a 255 por RGB y redondeo con Math.floor para numero entero
-    const b = Math.floor(Math.random()*255);  
-    
-    const rgb = {r: r, g: g, b: b};      //Exporto en forma de objeto
+    const numero = {
+        r : Math.floor(Math.random()*255),   
+        g : Math.floor(Math.random()*255),   //como Math.random genera un numero entre 0 y 1, quiero que mis numeros vayan de 0 a 255 por RGB y redondeo con Math.floor para numero entero
+        b : Math.floor(Math.random()*255),  
+    }
+    const {r,g,b} = numero
 
-    return rgb;
+    return {r: r, g: g, b: b};   //Exporto en forma de objeto
 };
 
 function rgbLetras(rgb) {            //Aca paso el objeto de tal manera que pueda ser leido en CSS 
 
-    let claves = Object.values(rgb)
-    let a = claves[0];
-    let b = claves[1];
-    let c = claves[2];
-    
-    const rgbColor = `rgb(${a}, ${b}, ${c})`;
+    let claves = Object.values(rgb);
+    let clave ={
+        a : claves[0],
+        b : claves[1],
+        c : claves[2]
+    };
+    let {a,b,c}= clave;
 
-    return rgbColor
+    return `rgb(${a}, ${b}, ${c})`;
 }
 
 
@@ -81,8 +59,12 @@ function save(color,newColor,texto) {  //Para que se guarden los datos en el loc
 
 let actual = localStorage.getItem('actual')
 
-button.addEventListener('click',function(){   //Ejecutamos cada vez que apretamos el boton
+button.addEventListener('click',function(){
     setBackground()
+    init()
+} );     
+
+function init() {
     let guardado= JSON.parse(localStorage.getItem('actual'))
     let newColo=guardado[0].newColor;
     let text=guardado[0].texto;
@@ -90,34 +72,35 @@ button.addEventListener('click',function(){   //Ejecutamos cada vez que apretamo
 
     colorNumber.innerHTML=newColo;
 
-    title.style.color= newColo;
-    colorNumber.style.color= newColo;
-    button.style.backgroundColor= newColo;
-    body.style.backgroundColor = newColo;
-    colorCard.style.backgroundColor=newColo;
+    title.setAttribute('style', `color: ${newColo};`);
+    colorNumber.setAttribute('style', `color: ${newColo};`);
+    button.setAttribute('style', `background-color: ${newColo};`);
+    body.setAttribute('style', `background-color: ${newColo};`);
+    colorCard.setAttribute('style', `background-color: ${newColo};`);
 
 
     if (text==='light'){
-        container.style.background= 'rgba(7, 15, 23, 0.65)';
+        container.setAttribute('style', 'background: rgba(7, 15, 23, 0.65);');
         button.style.color='rgba(7, 15, 23, 0.65)';
     } else {
-        container.style.background= 'rgba(255, 255, 255, 0.8)';
+        container.setAttribute('style', 'background: rgba(255, 255, 255, 0.8);');
         button.style.color='rgba(255, 255, 255, 0.8)';
     }
-})     
-
-
+}
 
 //---------------------MACHINE LEARNING-----------------------------------------
 
 function colorCerebro(x) {                 //Aca paso los valores rgb que van de 0 a 255 y los pongo de 0 a 1 porque la libreria brain.js solo entiende con esos valores
 
     let claves = Object.values(x)
-    let a = claves[0]/255;
-    let b = claves[1]/255;
-    let c = claves[2]/255;
-    const valor = {r: a, g: b, b: c}
-    return valor
+    let clave ={
+        a : claves[0]/255,
+        b : claves[1]/255,
+        c : claves[2]/255
+    };
+    let {a,b,c}= clave;
+    
+    return {r: a, g: b, b: c};
 }
 
 
