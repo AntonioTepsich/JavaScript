@@ -1,3 +1,4 @@
+
 const button = document.getElementById('button');
 const body = document.querySelector('body');
 const colorNumber = document.querySelector('.color-number');
@@ -107,23 +108,27 @@ function colorCerebro(x) {                 //Aca paso los valores rgb que van de
 function cerebro(color) {               //Aca la funcion me va a decir si el color es claro u oscuro
 
     let colorCer =colorCerebro(color);
-    const network = new brain.NeuralNetwork();
     
-    network.train([                                                     //Entrenamos a la maquina, mientras mas ejemplos le demos, mejores van a ser los resultados
-        { input: { r: 0.62, g: 0.72, b: 0.88 }, output: { light: 1 } },
-        { input: { r: 0.1, g: 0.84, b: 0.72 }, output: { light: 1 } },
-        { input: { r: 0.33, g: 0.24, b: 0.29 }, output: { dark: 1 } },
-        { input: { r: 0.74, g: 0.78, b: 0.86 }, output: { light: 1 } },
-        { input: { r: 0.31, g: 0.35, b: 0.41 }, output: { dark: 1 } },
-        { input: {r: 0.784, g: 0.255, b: 0.329}, output: { dark: 1 } },
-        { input: {r: 1, g: 0.99, b: 0}, output: { light: 1 } },
-        { input: {r: 1, g: 0.42, b: 0.52}, output: { dark: 1 } },
-    ])
-    
+    fetch('./data.json')
+    .then((response) => response.json())
+    .then((data) => {
+
+        // const network = new brain.NeuralNetwork();
+        const network = new brain.recurrent.LSTM();
+
+        const trainingData = data.map(item => ({
+                input: item.input,
+                output:item.output
+            }))
+            console.log(trainingData)
+            network.train( trainingData )                                                     //Entrenamos a la maquina, mientras mas ejemplos le demos, mejores van a ser los resultados
+            const result = brain.likely(colorCer, network);
+            return result;
+        })
+        
+        
 
 
-    const result = brain.likely(colorCer, network);
-    return result;
     
 }
 
